@@ -76,8 +76,8 @@ class ShortUIDConverter:
     """
     regex = r'[-a-zA-Z0-9_]{1,22}'
 
-    def to_python(self, value):
+    def to_python(self, value: str) -> UUID:
         return unslugify(value)
 
-    def to_url(self, value):
+    def to_url(self, value: UUID) -> str:
         return slugify(value)

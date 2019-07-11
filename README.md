@@ -45,7 +45,7 @@ UUID('c4e21057-6b8a-4dc0-8000-000000000000')
 Notice that this is a truncated [UUID](https://docs.python.org/3/library/uuid.html), with everything beyond the first
 eight bytes zeroed out.
 
-Once you have am ID, you can run `slugify_uuid` on it to get your slug.
+Once you have an ID, you can run `slugify_uuid` on it to get your slug.
 
 ```
 >>> from short_stuff import gen_unique_id, slugify
