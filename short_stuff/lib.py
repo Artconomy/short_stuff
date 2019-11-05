@@ -5,7 +5,7 @@ from base64 import encodebytes, decodebytes
 
 __all__ = (
     'pad_guid_bytes', 'pad_encoded_slug', 'slugify', 'unslugify', 'gen_guid',
-    'gen_unique_id', 'ShortUIDConverter',
+    'gen_unique_id',
 )
 
 
@@ -68,16 +68,3 @@ def gen_unique_id() -> UUID:
     ...since it will be a static value in the first case for ALL entries instead of a new value each time.
     """
     return gen_guid(byte_length=8)
-
-
-class ShortUIDConverter:
-    """This can be plugged into Django by registering it as a URL Converter. See
-    https://docs.djangoproject.com/en/2.2/_modules/django/urls/converters/ or the README for more information.
-    """
-    regex = r'[-a-zA-Z0-9_]{1,22}'
-
-    def to_python(self, value: str) -> UUID:
-        return unslugify(value)
-
-    def to_url(self, value: UUID) -> str:
-        return slugify(value)
