@@ -1,2 +1,5 @@
 from .lib import *
-from . import django
+try:
+    from . import django
+except ImportError:
+    pass
