@@ -1,6 +1,8 @@
 from uuid import uuid4
 
-from .lib import unslugify, slugify, gen_unique_id, pad_guid_bytes
+import pytest
+
+from .lib import unslugify, slugify, gen_unique_id, pad_guid_bytes, gen_guid
 
 
 def test_e2e_base():
@@ -14,3 +16,13 @@ def test_e2e_shortened():
         thing = gen_unique_id()
         print(f"({repr(thing)}, '{slugify(thing)}')")
         assert thing == unslugify(slugify(thing))
+
+
+def test_pad_guid_bytes():
+    with pytest.raises(ValueError):
+        pad_guid_bytes(b'')
+
+
+def test_gen_guid_limit():
+    with pytest.raises(ValueError):
+        gen_guid(0)

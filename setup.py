@@ -11,7 +11,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="short-stuff",
-    version="0.1.0",
+    version="1.0.0a",
     author="Fox Danger Piacenti",
     author_email="fox@artconomy.com",
     description="Set of utilities for managing 'short' GUIDs.",
