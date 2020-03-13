@@ -5,7 +5,7 @@ from base64 import encodebytes, decodebytes
 
 __all__ = (
     'pad_guid_bytes', 'pad_encoded_slug', 'slugify', 'unslugify', 'gen_guid',
-    'gen_unique_id',
+    'gen_unique_id', 'gen_shortcode',
 )
 
 
@@ -68,3 +68,6 @@ def gen_unique_id() -> UUID:
     ...since it will be a static value in the first case for ALL entries instead of a new value each time.
     """
     return gen_guid(byte_length=8)
+
+def gen_shortcode() -> str:
+    return slugify(gen_unique_id())
