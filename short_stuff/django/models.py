@@ -16,7 +16,10 @@ class ShortCodeField(UUIDField):
         if value is None:
             return None
         if isinstance(value, str):
-            return unslugify(value)
+            try:
+                return uuid.UUID(value)
+            except ValueError:
+                return unslugify(value)
         return value
 
     def get_db_prep_value(self, value, connection, prepared=False):
@@ -25,7 +28,10 @@ class ShortCodeField(UUIDField):
         if isinstance(value, uuid.UUID):
             value = value
         elif isinstance(value, str):
-            value = unslugify(value)
+            try:
+                value = uuid.UUID(value)
+            except ValueError:
+                value = unslugify(value)
         else:
             raise ValueError(f'Cannot convert {repr(value)} to UUD.')
 
@@ -37,7 +43,7 @@ class ShortCodeField(UUIDField):
         return value and slugify(value)
 
     def to_python(self, value):
-        if value is None:
+        if value is None and self.null:
             return None
         if isinstance(value, str):
             return value
@@ -45,7 +51,7 @@ class ShortCodeField(UUIDField):
             input_form = 'int' if isinstance(value, int) else 'hex'
             try:
                 value = uuid.UUID(**{input_form: value})
-            except (AttributeError, ValueError):
+            except (AttributeError, ValueError, TypeError):
                 raise exceptions.ValidationError(
                     self.error_messages['invalid'],
                     code='invalid',

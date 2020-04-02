@@ -2,7 +2,7 @@ from uuid import uuid4
 
 import pytest
 
-from .lib import unslugify, slugify, gen_unique_id, pad_guid_bytes, gen_guid
+from ..lib import unslugify, slugify, gen_shortcode_uuid, pad_guid_bytes
 
 
 def test_e2e_base():
@@ -13,7 +13,7 @@ def test_e2e_base():
 
 def test_e2e_shortened():
     for i in range(100):
-        thing = gen_unique_id()
+        thing = gen_shortcode_uuid()
         print(f"({repr(thing)}, '{slugify(thing)}')")
         assert thing == unslugify(slugify(thing))
 
@@ -25,4 +25,4 @@ def test_pad_guid_bytes():
 
 def test_gen_guid_limit():
     with pytest.raises(ValueError):
-        gen_guid(0)
+        gen_shortcode_uuid(0)

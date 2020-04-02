@@ -1,0 +1,7 @@
+[report]
+omit =
+    */migrations/*
+    test_*
+    */tests/*
+include =
+    ./*

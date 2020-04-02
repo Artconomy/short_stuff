@@ -5,10 +5,12 @@ from rest_framework.fields import Field
 
 from ..lib import unslugify, slugify
 
+
 class ShortCodeField(Field):
     default_error_messages = {
         'invalid': '"{value}" is not a valid short code.',
     }
+
     def to_internal_value(self, data: Any) -> Union[str, None]:
         if data is None:
             return None

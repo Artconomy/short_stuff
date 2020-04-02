@@ -19,64 +19,64 @@ provided for this.
 Short Stuff requires (at least) Python 3.5. It has only been tested on Python 3.7. The tests use 
 formatted strings, which were introduced in 3.6.
 
-Still working on testing and getting this package on PyPi, but if you want to use it now,
-you can install it as follows:
+To install:
 
 ```
-pip install -e git+https://github.com/Artconomy/short_stuff.git@0.1.0#egg=short_stuff
-```
-
-And you can add it to your local requirements.txt using a line like this:
-
-```
--e git+https://github.com/Artconomy/short_stuff.git@0.1.0#egg=short_stuff
+pip install short_stuff
 ```
 
 ## Quick Guide
 
-For a function which will generate a desired UUID with eight bytes worth of random data, use `gen_unique_id`.
+To generate a short code:
 
 ```
->>> from short_stuff import gen_unique_id
->>> gen_unique_id()
-UUID('c4e21057-6b8a-4dc0-8000-000000000000')
+>>> from short_stuff import gen_shortcode
+>>> gen_shortcode()
+'XtFxMb7qTJ-A'
+```
+
+To turn this code into a UUID (such as for DB storage):
+
+```
+>>> from short_stuff import unslugify
+>>> unslugify('XtFxMb7qTJ-A')
+UUID('5ed17131-beea-4c9f-8000-000000000000')
 ```
 
 Notice that this is a truncated [UUID](https://docs.python.org/3/library/uuid.html), with everything beyond the first
 eight bytes zeroed out.
 
-Once you have an ID, you can run `slugify_uuid` on it to get your slug.
+To turn the UUID back into a slug:
 
 ```
->>> from short_stuff import gen_unique_id, slugify
->>> slugify(gen_unique_id())
-'avThRgixR_OA'
+>>> from uuid import UUID
+>>> from short_stuff import slugify
+>>> slugify(UUID('5ed17131-beea-4c9f-8000-000000000000'))
+'XtFxMb7qTJ-A'
 ```
 
-Need to turn your slug back into a UUID? No problem!
-
-```
->>> from short_stuff import unslugify
->>> unslugify('avThRgixR_OA')
-UUID('6af4e146-08b1-47f3-8000-000000000000')
-```
 
 ## Django
 
-If you're using a UUIDField and want to take advantage of short_stuff's shortcode generation, you'll want
-to set a default on your field model.
+First class support for Django is provided. Django must be installed to use these features.
+The ShortCodeField model field is provided and is a special wrapper around UUIDField.
 
 ```
 from django.db import models
-from short_stuff import gen_unique_id
+from short_stuff import gen_shortcode
+from short_stuff.django.models import ShortCodeField
 
 
 class Doohickey(models.Model):
-    id = models.UUIDField(primary_key=True, db_index=True, default=gen_unique_id)
+    id = ShortCodeField(primary_key=True, db_index=True, default=gen_shortcode)
 
 ```
 
-**NOTICE**: Use `gen_unique_id` and not `gen_unique_id()`! if you don't omit the parentheses, the function
+Note that in most cases you can pass UUIDs to the field and allow it to convert internally.
+This might be helpful if converting existing models to use shortcodes. Migrations should go smoothly,
+but please be sure to test!
+
+**NOTICE**: Use `gen_shortcode` and not `gen_shortcode()`! if you don't omit the parentheses, the function
 will evaluate during the class definition and Django will attempt to set ALL new rows for the table with
 that default.
 
@@ -86,32 +86,32 @@ To do this, register the provided path converter:
 
 ```
 from django.urls import path, register_converter
-from short_stuff import ShortUIDConverter
+from short_stuff import ShortCodeConverter
 
 from . import views
 
-register_converter(converters.ShortUIDConverter, 'short_uid')
+register_converter(converters.ShortCodeConverter, 'short_code')
 
 urlpatterns = [
-    path('doohickeys/<short_uid:doohickey_id>/', views.doohickey_display),
+    path('doohickeys/<short_code:doohickey_id>/', views.doohickey_display),
     ...
 ]
 ```
 
-Your view will then be handed the resulting converted UUID as an argument, for easy 
+Your view will then be handed the resulting shortcode string as an argument, for easy 
 model lookup.
 
-Note that `ShortUIDConverter` will work on full length UUIDs as well, so if you've got an old 
-model that has a full UUID, it can handle the resulting code, which would be something like
-'Ot7-LXrERNmmlNljtGLuww'. It can, of course, also be used alongside existing routes that take
-a full UUID, since Django's routing system is sophisticated enough to handle both:
+Additionally, a serializer field is provided for use with Django REST
+Framework (it must be installed to use this feature.)
 
 ```
-    ...
-    path('doohickeys/<uuid:doohickey_id>/', views.doohickey_display),
-    path('doohickeys/<short_uid:doohickey_id>/', views.doohickey_display),
-    ...
+from rest_framework.serializers import Serializer
+from short_stuff.django.serializers import ShortCodeField
+
+class ShortCodeSerializer(Serializer):
+    test_field = ShortCodeField()
 ```
+
 
 ## FAQ
 
@@ -136,24 +136,23 @@ Thankfully, [Python's UUID objects](https://docs.python.org/3/library/uuid.html#
 them that allow you to retrieve their values in the forms of strings, integers, bytes, etc. In most cases, converting
 to your desired format is one more line of code.
 
-> I'd like to use a different number of bytes than the default 8 that `gen_unique_id` provides.
+> I'd like to use a different number of bytes than the default 8 that `gen_shortcode` provides.
 
-`gen_unique_id` is just a wrapper around a function called `gen_guid`, which can be given an argument of how many 
-bytes you wish to use. By default, it will use the full 16 required by UUIDs. If you wanted to generate a UUID with 
-only five bytes filled in, you could do:
+You can specify the number of bytes you want to use as an argument, like this:
 
 ```
->>> from short_stuff import gen_guid
->>> gen_guid(5)
-UUID('ef9b315a-6600-4000-8000-000000000000')
+>>> from short_stuff import gen_shortcode
+>>> gen_shortcode(10)
+'_WMWaDe4RsauOQ'
 ```
 
 ## Testing
 
-To run tests:
+To run tests, run the following from the repository root:
 
 ```
 pip install -r testing_requirements.txt
+pip install -e .
 pytest
 ```
 
