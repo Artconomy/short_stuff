@@ -9,7 +9,7 @@ __all__ = (
 )
 
 
-def pad_guid_bytes(raw_bytes: bytes, leading=False) -> bytes:
+def pad_guid_bytes(raw_bytes: bytes) -> bytes:
     """Pads a sequence of raw bytes to make them the required size of a UUID.
     Note that if you're using an int as your source for instantiating a UUID,
     you should not use this function. Just use UUID(your_int_here).
