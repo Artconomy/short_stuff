@@ -15,7 +15,7 @@ setuptools.setup(
     author='Fox Danger Piacenti',
     author_email='fox@artconomy.com',
     description='Set of utilities for managing unique shortcodes.',
-    download_url='https://github.com/Artconomy/short_stuff/archive/1.0.1.tar.gz',
+    download_url='https://github.com/Artconomy/short_stuff/archive/1.0.2.tar.gz',
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Artconomy/short_stuff",
