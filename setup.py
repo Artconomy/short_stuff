@@ -11,7 +11,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name='short_stuff',
-    version='1.0.1',
+    version='1.0.2',
     author='Fox Danger Piacenti',
     author_email='fox@artconomy.com',
     description='Set of utilities for managing unique shortcodes.',
@@ -21,7 +21,7 @@ setuptools.setup(
     url="https://github.com/Artconomy/short_stuff",
     packages=setuptools.find_packages(),
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',

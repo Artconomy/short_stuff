@@ -28,6 +28,8 @@ class ShortCodeField(UUIDField):
         if isinstance(value, uuid.UUID):
             value = value
         elif isinstance(value, str):
+            if not value:
+                return None
             try:
                 value = uuid.UUID(value)
             except ValueError:
