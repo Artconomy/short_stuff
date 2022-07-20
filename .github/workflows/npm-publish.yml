@@ -9,16 +9,19 @@ on:
 
 jobs:
   publish-npm:
-    needs: build
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./ts_version
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
-        working-directory: ./ts_version
         with:
+          cache-dependency-path: ts_version/package-lock.json
           node-version: 16
           registry-url: https://registry.npmjs.org/
       - run: make publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+          working-directory: ./ts_version
 
