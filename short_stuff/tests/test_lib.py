@@ -14,7 +14,6 @@ def test_e2e_base():
 def test_e2e_shortened():
     for i in range(100):
         thing = gen_shortcode_uuid()
-        print(f"({repr(thing)}, '{slugify(thing)}')")
         assert thing == unslugify(slugify(thing))
 
 

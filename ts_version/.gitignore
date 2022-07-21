@@ -1,0 +1,16 @@
+.idea/**
+.vscode/**
+node_modules/
+.DS_Store
+*.swp
+coverage/**
+.python-version
+**/build/**
+**/_build/**
+docs/assets/**
+docs/typedoc/**
+docs/providence_docs.egg-info/**
+dist/
+src/**/*.js
+src/**/*.d.ts
+src/**/*.map

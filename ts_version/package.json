@@ -1,0 +1,58 @@
+{
+  "name": "short-stuff",
+  "version": "0.0.1",
+  "description": "Short Stuff is a set of helper functions used for generating short unique identifiers, such as those used in YouTube video IDs or in URL shorteners.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:clear": "jest --clearCache",
+    "lint": "eslint src",
+    "lint:fix": "eslint --fix src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Artconomy/short_stuff"
+  },
+  "keywords": [
+    "uuid"
+  ],
+  "author": {
+    "name": "Navin Karkera",
+    "email": "navin@opencraft.com",
+    "url": "https://opencraft.com/"
+  },
+  "contributors": [
+    {
+      "name": "OpenCraft",
+      "contact": "contact@opencraft.com",
+      "url": "https://opencraft.com/"
+    },
+    {
+      "name": "Artconomy",
+      "contact": "contact@artconomy.com",
+      "url": "https://artconomy.com/"
+    }
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "WTFPL",
+  "bugs": {
+    "url": "https://github.com/Artconomy/short_stuff/issues"
+  },
+  "homepage": "https://github.com/Artconomy/short_stuff",
+  "devDependencies": {
+    "@types/jest": "^28.1.5",
+    "@types/uuid": "^8.3.4",
+    "@typescript-eslint/eslint-plugin": "^5.30.6",
+    "@typescript-eslint/parser": "^5.30.6",
+    "eslint": "^8.19.0",
+    "jest": "^28.1.3",
+    "ts-jest": "^28.0.5",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "uuid": "^8.3.2"
+  }
+}
