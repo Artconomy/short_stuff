@@ -11,7 +11,6 @@ test("e2e base", () => {
 test("e2e shorthand", () => {
   for (let index = 0; index < 100; index++) {
     const thing = genShortcodeUuid();
-    console.log(`(${thing}, ${slugify(thing)})`);
     expect(unSlugify(slugify(thing))).toBe(thing);
   }
 });
