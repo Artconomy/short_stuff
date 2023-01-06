@@ -21,7 +21,7 @@ formatted strings, which were introduced in 3.6.
 
 To install:
 
-```
+```shell
 pip install short_stuff
 ```
 
@@ -29,7 +29,7 @@ pip install short_stuff
 
 To generate a short code:
 
-```
+```python
 >>> from short_stuff import gen_shortcode
 >>> gen_shortcode()
 'XtFxMb7qTJ-A'
@@ -37,7 +37,7 @@ To generate a short code:
 
 To turn this code into a UUID (such as for DB storage):
 
-```
+```python
 >>> from short_stuff import unslugify
 >>> unslugify('XtFxMb7qTJ-A')
 UUID('5ed17131-beea-4c9f-8000-000000000000')
@@ -48,11 +48,11 @@ eight bytes zeroed out.
 
 To turn the UUID back into a slug:
 
-```
->>> from uuid import UUID
->>> from short_stuff import slugify
->>> slugify(UUID('5ed17131-beea-4c9f-8000-000000000000'))
-'XtFxMb7qTJ-A'
+```python
+from uuid import UUID
+from short_stuff import slugify
+slugify(UUID('5ed17131-beea-4c9f-8000-000000000000'))
+# Output: 'XtFxMb7qTJ-A'
 ```
 
 
@@ -61,14 +61,33 @@ To turn the UUID back into a slug:
 First class support for Django is provided. Django must be installed to use these features.
 The ShortCodeField model field is provided and is a special wrapper around UUIDField.
 
+### Installing short_stuff
+
+`short_stuff` does not create any models, but it does use Django's instrumentation to allow for custom admin widgets.
+
+Add it to your INSTALLED_APPS in your `settings.py` like so:
+
+```python
+INSTALLED_APPS = [
+    # ...
+    'short_stuff',
+]
 ```
+
+### Model Fields
+
+```python
 from django.db import models
 from short_stuff import gen_shortcode
 from short_stuff.django.models import ShortCodeField
 
 
 class Doohickey(models.Model):
-    id = ShortCodeField(primary_key=True, db_index=True, default=gen_shortcode)
+    # When used as the primary key, no default is needed--
+    # a shortcode is generated.
+    id = ShortCodeField(primary_key=True, db_index=True)
+    # Otherwise, you may want to provide one by default.
+    other_shortcode = ShortCodeField(default=gen_shortcode)
 
 ```
 
@@ -80,17 +99,16 @@ but please be sure to test!
 will evaluate during the class definition and Django will attempt to set ALL new rows for the table with
 that default.
 
+### URL Support
+
 Now that you have the shortcodes on your models, you'll want to make it possible to refer to them in your URLs.
 
-To do this, register the provided path converter:
+Short Stuff installs a path converter for you, making this easy:
 
-```
-from django.urls import path, register_converter
-from short_stuff import ShortCodeConverter
+```python
+from django.urls import path
 
 from . import views
-
-register_converter(converters.ShortCodeConverter, 'short_code')
 
 urlpatterns = [
     path('doohickeys/<short_code:doohickey_id>/', views.doohickey_display),
@@ -104,7 +122,7 @@ model lookup.
 Additionally, a serializer field is provided for use with Django REST
 Framework (it must be installed to use this feature.)
 
-```
+```python
 from rest_framework.serializers import Serializer
 from short_stuff.django.serializers import ShortCodeField
 
@@ -140,17 +158,17 @@ to your desired format is one more line of code.
 
 You can specify the number of bytes you want to use as an argument, like this:
 
-```
->>> from short_stuff import gen_shortcode
->>> gen_shortcode(10)
-'_WMWaDe4RsauOQ'
+```python
+from short_stuff import gen_shortcode
+gen_shortcode(10)
+# Output: '_WMWaDe4RsauOQ'
 ```
 
 ## Testing
 
 To run tests, run the following from the repository root:
 
-```
+```shell
 pip install -r testing_requirements.txt
 pip install -e .
 pytest

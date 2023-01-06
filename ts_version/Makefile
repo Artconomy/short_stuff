@@ -16,6 +16,13 @@ build:  # Build the NPM package.
 	rm -rvf dist/__mocks__
 	find dist -depth -regex '.*/specs[/]?.*' -delete
 	cp package.json README.md ../LICENSE.txt dist/
+	mkdir dist/browser/
+	# Prepare <script> versions of the library in case someone needs these functions
+    # outside of a node build environment, such as for the Django admin.
+	npx browserify main.js > dist/browser/short-stuff.js
+	npx uglifyjs dist/browser/short-stuff.js > dist/browser/short-stuff.min.js
+	# Make this available for the Django admin to use.
+	cp dist/browser/short-stuff.js ../short_stuff/static/short_stuff/js/
 
 tarball: build
 	cd dist && npm pack

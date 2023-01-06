@@ -106,5 +106,4 @@
     "out": "docs/typedoc",
     "exclude": ["**/node_modules/**", "dist/**"],
   }
-
 }
