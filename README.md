@@ -30,17 +30,17 @@ pip install short_stuff
 To generate a short code:
 
 ```python
->>> from short_stuff import gen_shortcode
->>> gen_shortcode()
-'XtFxMb7qTJ-A'
+from short_stuff import gen_shortcode
+gen_shortcode()
+# Output: 'XtFxMb7qTJ-A'
 ```
 
 To turn this code into a UUID (such as for DB storage):
 
 ```python
->>> from short_stuff import unslugify
->>> unslugify('XtFxMb7qTJ-A')
-UUID('5ed17131-beea-4c9f-8000-000000000000')
+from short_stuff import unslugify
+unslugify('XtFxMb7qTJ-A')
+# Output: UUID('5ed17131-beea-4c9f-8000-000000000000')
 ```
 
 Notice that this is a truncated [UUID](https://docs.python.org/3/library/uuid.html), with everything beyond the first
@@ -63,7 +63,8 @@ The ShortCodeField model field is provided and is a special wrapper around UUIDF
 
 ### Installing short_stuff
 
-`short_stuff` does not create any models, but it does use Django's instrumentation to allow for custom admin widgets.
+`short_stuff` does not create any models, but it does use Django's instrumentation to allow for custom admin
+widgets and URL handling.
 
 Add it to your INSTALLED_APPS in your `settings.py` like so:
 

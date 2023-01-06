@@ -7,6 +7,15 @@ from django import forms
 from ..lib import unslugify, slugify, gen_shortcode
 
 
+class ShortCodeWidget(forms.TextInput):
+    def __init__(self, *args, **kwargs):
+        print('I ran!')
+        super().__init__(*args, **kwargs)
+
+    class Media:
+        js = ('short_stuff/js/short-stuff.js',)
+
+
 class ShortCodeField(UUIDField):
     def value_to_string(self, obj):
         value = self.value_from_object(obj)
@@ -69,5 +78,6 @@ class ShortCodeField(UUIDField):
     def formfield(self, **kwargs):
         return super().formfield(**{
             'form_class': forms.CharField,
+            'widget': ShortCodeWidget,
             **kwargs,
         })
