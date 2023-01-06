@@ -4,7 +4,7 @@ from django.core import exceptions
 from django.db.models import UUIDField
 from django import forms
 
-from ..lib import unslugify, slugify
+from ..lib import unslugify, slugify, gen_shortcode
 
 
 class ShortCodeField(UUIDField):
@@ -40,6 +40,11 @@ class ShortCodeField(UUIDField):
         if connection.features.has_native_uuid_field:
             return value
         return value.hex
+
+    def get_default(self):
+        if self.primary_key and not self.has_default():
+            return gen_shortcode()
+        return super().get_default()
 
     def from_db_value(self, value, expression, connection):
         return value and slugify(value)
