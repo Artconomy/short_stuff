@@ -11,7 +11,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name='short_stuff',
-    version='1.1.0',
+    version='1.2.0',
     author='Fox Danger Piacenti',
     author_email='fox@artconomy.com',
     description='Set of utilities for managing unique shortcodes.',

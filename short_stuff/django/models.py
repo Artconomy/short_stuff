@@ -4,7 +4,16 @@ from django.core import exceptions
 from django.db.models import UUIDField
 from django import forms
 
-from ..lib import unslugify, slugify
+from ..lib import unslugify, slugify, gen_shortcode
+
+
+class ShortCodeWidget(forms.TextInput):
+    def __init__(self, *args, **kwargs):
+        print('I ran!')
+        super().__init__(*args, **kwargs)
+
+    class Media:
+        js = ('short_stuff/js/short-stuff.js',)
 
 
 class ShortCodeField(UUIDField):
@@ -41,6 +50,11 @@ class ShortCodeField(UUIDField):
             return value
         return value.hex
 
+    def get_default(self):
+        if self.primary_key and not self.has_default():
+            return gen_shortcode()
+        return super().get_default()
+
     def from_db_value(self, value, expression, connection):
         return value and slugify(value)
 
@@ -64,5 +78,6 @@ class ShortCodeField(UUIDField):
     def formfield(self, **kwargs):
         return super().formfield(**{
             'form_class': forms.CharField,
+            'widget': ShortCodeWidget,
             **kwargs,
         })
