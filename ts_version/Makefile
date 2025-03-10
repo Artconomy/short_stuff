@@ -10,11 +10,14 @@ install_prereqs:
 build:  # Build the NPM package.
 	rm -rvf dist
 	cp -a src dist
+	cp tsconfig.json dist/
+	sed -i -e '/"rootDir"/d' dist/tsconfig.json
 	cd dist && npx tsc -d && cd ..
 	rm -rvf dist/__mocks__
 	find dist -regex '.*/specs[/]?.*' -delete
 	find dist -regex '.*[.]ts' -not -regex ".*[.]d[.]ts" -delete
 	find dist -regex '.*[.]test[.].*' -delete
+	rm dist/tsconfig.json
 	cp package.json README.md ../LICENSE.txt dist/
 
 tarball: build

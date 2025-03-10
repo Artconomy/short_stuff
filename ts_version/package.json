@@ -1,6 +1,6 @@
 {
   "name": "short-stuff",
-  "version": "1.2.0-rc.1",
+  "version": "1.2.0-rc.2",
   "description": "Short Stuff is a set of helper functions used for generating short unique identifiers, such as those used in YouTube video IDs or in URL shorteners.",
   "main": "index.js",
   "scripts": {
